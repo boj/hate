@@ -9,17 +9,21 @@ module Hate
     
     def self.trapcc
       trap('INT') do
-        Hate::Core::Callbacks.quit
-        puts "Goodbye!"
-        exit
+        self.halt
       end
+    end
+    
+    def self.halt
+      Hate::Core::Callbacks.quit
+      puts "Goodbye!"
+      exit
     end
     
     def self.options
       opts = Trollop::options do
         version "Hate %s (c) 2011 Brian Jones" % Hate::VERSION
         banner <<-EOS
-        Hate 2d - A Ruby 2d Game Engine
+        Hate 3d - A Ruby 3d Game Engine
 
         Usage:
           hate [options] <game main.rb>
@@ -48,8 +52,6 @@ module Hate
       load    # Load user game
 
       game = Hate::Graphics::Window.new
-      game.light[:diffuse]  = MemoryPointer.new(:float, 4).put_array_of_float(0, [1.0, 0.0, 0.0, 1.0])
-      game.light[:position] = MemoryPointer.new(:float, 4).put_array_of_float(0, [1.0, 1.0, 1.0, 0.0])
       game.start
     end
     
@@ -61,7 +63,7 @@ module Hate
         Hate::Game.load if Hate::Game.respond_to?('load')
       end
       
-      # Called each tick to update game logic.
+      # Called every other tick to update game logic.
       def self.update
         Hate::Game.update if Hate::Game.respond_to?('update')
       end
