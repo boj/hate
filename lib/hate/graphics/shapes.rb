@@ -6,6 +6,7 @@ module Hate
         
         attr_reader :x, :y, :z
         attr_reader :ra, :rx, :ry, :rz
+        attr_reader :color
         
         def translate(x=0.0, y=0.0, z=0.0)
           @x, @y, @z = x, y, z
@@ -13,6 +14,10 @@ module Hate
         
         def rotate(a=0.0, x=0.0, y=0.0, z=0.0)
           @ra, @rx, @ry, @rz = a, x, y, z
+        end
+        
+        def color=(c=Hate::Graphics::Color::BLUE)
+          @color = c
         end
         
       end

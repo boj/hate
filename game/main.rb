@@ -3,7 +3,8 @@ module Hate
     def self.load
       puts "Welcome!"
       
-      @camera = Hate::Graphics::Camera.new(-1.5, 0.0, -6.0)
+      @camera = Hate::Graphics::Camera.new
+      @camera.translate(-1.5, 0.0, -6.0)
       Hate::Graphics::Manager.add_camera(@camera)
       
       #@square = Hate::Graphics::Shapes::Square.new(0.5)
