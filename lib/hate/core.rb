@@ -51,8 +51,18 @@ module Hate
       options # Load cli options
       load    # Load user game
 
-      game = Hate::Graphics::Window.new
-      game.start
+      @window = Hate::Graphics::Window.new
+      @window.start
+    end
+    
+    # Grab the default OpenGL window.
+    def self.window
+      @window
+    end
+    
+    # Get the current time in seconds according to GLUT_ELAPSED_TIME.
+    def self.time
+      @window.time
     end
     
     # Callbacks are overridden by the user in Core::Game
