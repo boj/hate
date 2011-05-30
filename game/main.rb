@@ -11,10 +11,15 @@ module Hate
       #@square.translate(0.0, 0.0, -10.0)
       #Hate::Graphics::Manager.add_object(@square)
       
-      @cube = Hate::Graphics::Shapes::Cube.new(1.0)
-      @cube.translate(0.0, 0.0, -7.0)
-      @cube.rotate(45.0, 0.5, 0.3, 0.1)
-      Hate::Graphics::Manager.add_object(@cube)
+      @cube1 = Hate::Graphics::Shapes::Cube.new(1.0)
+      @cube1.translate(-1.2, 0.0, -7.0)
+      @cube1.rotate(45.0, 0.5, 0.3, 0.1)
+      Hate::Graphics::Manager.add_object(@cube1)
+      
+      @cube2 = Hate::Graphics::Shapes::Cube.new(0.7)
+      @cube2.translate(1.2, 0.0, -7.0)
+      @cube2.rotate(45.0, 0.5, 0.3, 0.1)
+      Hate::Graphics::Manager.add_object(@cube2)
       
       @light1 = Hate::Graphics::Light.new
       Hate::Graphics::Manager.add_light(@light1)
@@ -28,7 +33,7 @@ module Hate
       
     end
     def self.draw
-      @cube.rotate(@cube.ra + @rotate, 0.5, 0.3, 0.1)
+      @cube1.rotate(@cube1.ra + @rotate, 0.5, 0.3, 0.1)
     end
     def self.quit
       puts "Game Over"

@@ -53,7 +53,6 @@ module Hate
 
       def display
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
-        glLoadIdentity
         Hate::Graphics::Manager.run
       end
 
@@ -77,7 +76,7 @@ module Hate
           when 27 # Escape
             exit
         end
-        glutPostRedisplay()
+        glutPostRedisplay
       end
       
       def mouse(button, state, x, y)
