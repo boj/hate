@@ -6,6 +6,10 @@ module Hate
       @lights  = []
       @cameras = []
       
+      def self.lights
+        @lights
+      end
+      
       def self.run
         @objects.each do |obj|
           obj.run
@@ -29,13 +33,6 @@ module Hate
       
       def self.remove_light(obj)
         @lights.delete obj
-      end
-      
-      def self.default_light
-        return Hate::Graphics::Light.new if @lights.empty?
-        @lights.each do |obj|
-          return obj if obj.is_default?
-        end
       end
       
       def self.add_camera(obj)

@@ -20,6 +20,7 @@ module Hate
       end
       
       def run(x, y)
+        glLoadIdentity
         glTranslatef(@x, @y, @z)
         glViewport(0, 0, x, y)
         glMatrixMode(GL_PROJECTION)

@@ -7,8 +7,8 @@ module Hate
       @camera.translate(-1.5, 0.0, -6.0)
       Hate::Graphics::Manager.add_camera(@camera)
       
-      #@square = Hate::Graphics::Shapes::Square.new(0.5)
-      #@square.translate(0.0, 0.0, -5.0)
+      #@square = Hate::Graphics::Shapes::Square.new(5.0)
+      #@square.translate(0.0, 0.0, -10.0)
       #Hate::Graphics::Manager.add_object(@square)
       
       @cube = Hate::Graphics::Shapes::Cube.new(1.0)
@@ -16,7 +16,13 @@ module Hate
       @cube.rotate(45.0, 0.5, 0.3, 0.1)
       Hate::Graphics::Manager.add_object(@cube)
       
-      @rotate = 0.02
+      @light1 = Hate::Graphics::Light.new
+      Hate::Graphics::Manager.add_light(@light1)
+      
+      @light2 = Hate::Graphics::Light.new([1.0, 0.5, 0.0, 1.0], [0.0, 1.0, 1.0, 1.0], [10.0, 10.0, 10.0, 0.0])
+      Hate::Graphics::Manager.add_light(@light2)
+      
+      @rotate = 0.1
     end
     def self.update
       

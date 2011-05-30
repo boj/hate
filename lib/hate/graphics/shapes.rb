@@ -6,7 +6,7 @@ module Hate
         
         attr_reader :x, :y, :z
         attr_reader :ra, :rx, :ry, :rz
-        attr_reader :color
+        attr_reader :c
         
         def translate(x=0.0, y=0.0, z=0.0)
           @x, @y, @z = x, y, z
@@ -16,8 +16,8 @@ module Hate
           @ra, @rx, @ry, @rz = a, x, y, z
         end
         
-        def color=(c=Hate::Graphics::Color::BLUE)
-          @color = c
+        def color(c=[0.0, 0.0, 1.0])
+          @c = c
         end
         
       end
@@ -28,14 +28,15 @@ module Hate
           @s = s
           translate
           rotate
+          color
         end
         
         def run
           glLoadIdentity
           glTranslatef(@x, @y, @z)
           glRotatef(@ra, @rx, @ry, @rz)
+          glColor3f(@c[0], @c[1], @c[2])
           glutSolidCube(@s)
-          #glFlush
           glutSwapBuffers
         end
 
@@ -47,45 +48,42 @@ module Hate
           @s = s
           translate
           rotate
+          color
         end
         
         def run
           glLoadIdentity
           glTranslatef(@x, @y, @z)
           glRotatef(@ra, @rx, @ry, @rz)
+          glColor3f(@c[0], @c[1], @c[2])
+          
           glBegin(GL_QUADS)
 
-          glColor3f(0.0, 1.0, 0.0)
           glVertex3f( @s, @s,-@s)
           glVertex3f(-@s, @s,-@s)
           glVertex3f(-@s, @s, @s)
           glVertex3f( @s, @s, @s)
           
-          glColor3f(1.0, 0.5, 0.0)
       		glVertex3f( @s,-@s, @s)
       		glVertex3f(-@s,-@s, @s)
       		glVertex3f(-@s,-@s,-@s)
       		glVertex3f( @s,-@s,-@s)
       		
-      		glColor3f(1.0, 0.0, 0.0)
       		glVertex3f( @s, @s, @s)
       		glVertex3f(-@s, @s, @s)
       		glVertex3f(-@s,-@s, @s)
       		glVertex3f( @s,-@s, @s)
-      		
-      		glColor3f(1.0, 1.0, 0.0)
+
       		glVertex3f( @s,-@s,-@s)
       		glVertex3f(-@s,-@s,-@s)
       		glVertex3f(-@s, @s,-@s)
       		glVertex3f( @s, @s,-@s)
       		
-      		glColor3f(0.0, 0.0, 1.0)
       		glVertex3f(-@s, @s, @s)
       		glVertex3f(-@s, @s,-@s)
       		glVertex3f(-@s,-@s,-@s)
       		glVertex3f(-@s,-@s, @s)
       		
-      		glColor3f(1.0, 0.0, 1.0)
       		glVertex3f(@s, @s,-@s)
       		glVertex3f(@s, @s, @s)
       		glVertex3f(@s,-@s, @s)

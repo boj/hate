@@ -26,14 +26,19 @@ module Hate
         glutInitDisplayMode(GLUT_RGB | GLUT_DEPTH | GLUT_DOUBLE)
         glutInitWindowSize(@width, @height)
         glutCreateWindow(title)
-        glLightfv(GL_LIGHT0, GL_DIFFUSE, Hate::Graphics::Manager.default_light.diffuse)
-        glLightfv(GL_LIGHT0, GL_POSITION, Hate::Graphics::Manager.default_light.position)
-        glEnable(GL_LIGHT0)
+        
+        Hate::Graphics::Manager.lights.each_with_index do |light, i|
+          glLightfv(eval("GL_LIGHT%i" % i), GL_AMBIENT, light.ambient)
+          glLightfv(eval("GL_LIGHT%i" % i), GL_DIFFUSE, light.diffuse)
+          glLightfv(eval("GL_LIGHT%i" % i), GL_POSITION, light.position)
+          glEnable(eval("GL_LIGHT%i" % i))
+        end
         glEnable(GL_LIGHTING)
+        
         glEnable(GL_CULL_FACE)
         glEnable(GL_DEPTH_TEST)
         glShadeModel(GL_SMOOTH)
-        glClearColor(0.0, 0.0, 0.0, 0.0)
+        glClearColor(1.0, 1.0, 1.0, 0.0)
         glClearDepth(1.0)
         glDepthFunc(GL_LEQUAL)
         glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST) # Small performance hit
@@ -47,7 +52,8 @@ module Hate
       end
 
       def display
-        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
+        glLoadIdentity
         Hate::Graphics::Manager.run
       end
 
