@@ -4,11 +4,11 @@ module Hate
       puts "Welcome!"
       
       @camera = Hate::Graphics::Camera.new
-      @camera.translate(-1.5, 0.0, -6.0)
+      @camera.translate(-1.5, 0.0, 0.0)
       Hate::Graphics::Manager.add_camera(@camera)
       
       @square = Hate::Graphics::Shapes::Square.new(5.0)
-      @square.translate(0.0, 0.0, -10.0)
+      @square.translate(0.0, 0.0, -15.0)
       Hate::Graphics::Manager.add_object(@square)
       
       @cube1 = Hate::Graphics::Shapes::Cube.new(1.0)
@@ -17,7 +17,7 @@ module Hate
       Hate::Graphics::Manager.add_object(@cube1)
       
       @cube2 = Hate::Graphics::Shapes::Cube.new(0.7)
-      @cube2.translate(1.2, 0.0, -7.0)
+      @cube2.translate(1.2, 0.0, -10.0)
       @cube2.rotate(45.0, 0.5, 0.3, 0.1)
       Hate::Graphics::Manager.add_object(@cube2)
       

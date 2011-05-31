@@ -37,7 +37,6 @@ module Hate
           glRotatef(@ra, @rx, @ry, @rz)
           glColor3f(@c[0], @c[1], @c[2])
           glutSolidCube(@s)
-          glutSwapBuffers
         end
 
       end
@@ -90,7 +89,6 @@ module Hate
       		glVertex3f(@s,-@s,-@s)
           
           glEnd
-          glutSwapBuffers
         end
 
       end
