@@ -27,21 +27,26 @@ module Hate
         glutInitWindowSize(@width, @height)
         glutCreateWindow(title)
         
-        Hate::Graphics::Manager.lights.each_with_index do |light, i|
-          glLightfv(eval("GL_LIGHT%i" % i), GL_AMBIENT, light.ambient)
-          glLightfv(eval("GL_LIGHT%i" % i), GL_DIFFUSE, light.diffuse)
-          glLightfv(eval("GL_LIGHT%i" % i), GL_POSITION, light.position)
-          glEnable(eval("GL_LIGHT%i" % i))
-        end
-        glEnable(GL_LIGHTING)
-        
-        glEnable(GL_CULL_FACE)
+        #glColor4f(1.0, 1.0, 1.0, 0.5)
+        #glBlendFunc(GL_SRC_ALPHA,GL_ONE)
+        #glEnable(GL_BLEND)
         glEnable(GL_DEPTH_TEST)
+        glEnable(GL_CULL_FACE)
+        glEnable(GL_COLOR_MATERIAL)
+        
         glShadeModel(GL_SMOOTH)
         glClearColor(1.0, 1.0, 1.0, 0.0)
         glClearDepth(1.0)
         glDepthFunc(GL_LEQUAL)
         glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST) # Small performance hit
+        
+        Hate::Graphics::Manager.lights.each_with_index do |light, i|
+          glLightfv(eval("GL_LIGHT%i" % (i + 1)), GL_AMBIENT, light.ambient)
+          glLightfv(eval("GL_LIGHT%i" % (i + 1)), GL_DIFFUSE, light.diffuse)
+          glLightfv(eval("GL_LIGHT%i" % (i + 1)), GL_POSITION, light.position)
+          glEnable(eval("GL_LIGHT%i" % (i + 1)))
+        end
+        glEnable(GL_LIGHTING) if Hate::Graphics::Manager.lights.size > 0
         
         glutDisplayFunc(method(:display).to_proc)
         glutIdleFunc(method(:idle).to_proc)

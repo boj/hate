@@ -4,6 +4,7 @@ module Hate
       
       class Base
         
+        attr_accessor :memory, :size
         attr_reader :x, :y, :z
         attr_reader :ra, :rx, :ry, :rz
         attr_reader :c
@@ -16,8 +17,8 @@ module Hate
           @ra, @rx, @ry, @rz = a, x, y, z
         end
         
-        def color(c=[0.0, 0.0, 1.0])
-          @c = c
+        def color(r=0.0, g=0.0, b=0.0)
+          @c = [r, g, b]
         end
         
       end
@@ -25,7 +26,7 @@ module Hate
       class Square < Base
         
         def initialize(s=1.0)
-          @s = s
+          @size = s
           translate
           rotate
           color
@@ -36,7 +37,7 @@ module Hate
           glTranslatef(@x, @y, @z)
           glRotatef(@ra, @rx, @ry, @rz)
           glColor3f(@c[0], @c[1], @c[2])
-          glutSolidCube(@s)
+          glutSolidCube(@size)
         end
 
       end
@@ -44,51 +45,68 @@ module Hate
       class Cube < Base
         
         def initialize(s=1.0)
-          @s = s
+          @size = s
           translate
           rotate
           color
         end
         
-        def run
-          glLoadIdentity
+        def build
           glTranslatef(@x, @y, @z)
           glRotatef(@ra, @rx, @ry, @rz)
           glColor3f(@c[0], @c[1], @c[2])
           
           glBegin(GL_QUADS)
 
-          glVertex3f( @s, @s,-@s)
-          glVertex3f(-@s, @s,-@s)
-          glVertex3f(-@s, @s, @s)
-          glVertex3f( @s, @s, @s)
+          glNormal3f(0.0, 0.0, 1.0)
+          glVertex3f( @size, @size,-@size)
+          glVertex3f(-@size, @size,-@size)
+          glVertex3f(-@size, @size, @size)
+          glVertex3f( @size, @size, @size)
           
-      		glVertex3f( @s,-@s, @s)
-      		glVertex3f(-@s,-@s, @s)
-      		glVertex3f(-@s,-@s,-@s)
-      		glVertex3f( @s,-@s,-@s)
+          glNormal3f(0.0, 0.0, -1.0)
+      		glVertex3f( @size,-@size, @size)
+      		glVertex3f(-@size,-@size, @size)
+      		glVertex3f(-@size,-@size,-@size)
+      		glVertex3f( @size,-@size,-@size)
       		
-      		glVertex3f( @s, @s, @s)
-      		glVertex3f(-@s, @s, @s)
-      		glVertex3f(-@s,-@s, @s)
-      		glVertex3f( @s,-@s, @s)
+      		glNormal3f(0.0, 1.0, 0.0)
+      		glVertex3f( @size, @size, @size)
+      		glVertex3f(-@size, @size, @size)
+      		glVertex3f(-@size,-@size, @size)
+      		glVertex3f( @size,-@size, @size)
 
-      		glVertex3f( @s,-@s,-@s)
-      		glVertex3f(-@s,-@s,-@s)
-      		glVertex3f(-@s, @s,-@s)
-      		glVertex3f( @s, @s,-@s)
+          glNormal3f(0.0, -1.0, 0.0)
+      		glVertex3f( @size,-@size,-@size)
+      		glVertex3f(-@size,-@size,-@size)
+      		glVertex3f(-@size, @size,-@size)
+      		glVertex3f( @size, @size,-@size)
       		
-      		glVertex3f(-@s, @s, @s)
-      		glVertex3f(-@s, @s,-@s)
-      		glVertex3f(-@s,-@s,-@s)
-      		glVertex3f(-@s,-@s, @s)
+      		glNormal3f(1.0, 0.0, 0.0)
+      		glVertex3f(-@size, @size, @size)
+      		glVertex3f(-@size, @size,-@size)
+      		glVertex3f(-@size,-@size,-@size)
+      		glVertex3f(-@size,-@size, @size)
       		
-      		glVertex3f(@s, @s,-@s)
-      		glVertex3f(@s, @s, @s)
-      		glVertex3f(@s,-@s, @s)
-      		glVertex3f(@s,-@s,-@s)
+      		glNormal3f(-1.0, 0.0, 0.0)
+      		glVertex3f(@size, @size,-@size)
+      		glVertex3f(@size, @size, @size)
+      		glVertex3f(@size,-@size, @size)
+      		glVertex3f(@size,-@size,-@size)
           
           glEnd
+        end
+        
+        def compile
+          glGenLists(1)
+          glNewList(@memory, GL_COMPILE)
+          build
+          glEndList
+        end
+        
+        def run
+          glLoadIdentity
+          @memory.nil? ? build : glCallList(@memory)
         end
 
       end
