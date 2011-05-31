@@ -7,9 +7,9 @@ module Hate
       @camera.translate(-1.5, 0.0, -6.0)
       Hate::Graphics::Manager.add_camera(@camera)
       
-      #@square = Hate::Graphics::Shapes::Square.new(5.0)
-      #@square.translate(0.0, 0.0, -10.0)
-      #Hate::Graphics::Manager.add_object(@square)
+      @square = Hate::Graphics::Shapes::Square.new(5.0)
+      @square.translate(0.0, 0.0, -10.0)
+      Hate::Graphics::Manager.add_object(@square)
       
       @cube1 = Hate::Graphics::Shapes::Cube.new(1.0)
       @cube1.translate(-1.2, 0.0, -7.0)
@@ -34,6 +34,24 @@ module Hate
     end
     def self.draw
       @cube1.rotate(@cube1.ra + @rotate, 0.5, 0.3, 0.1)
+    end
+    def keypressed(k)
+      puts "key: " + k
+      case k
+        when ?w, ?W
+          
+        when ?s, ?S
+          
+        when ?a, ?A
+          
+        when ?d, ?D
+          
+        when 27 # Escape
+          Hate::Game.quit
+      end
+    end
+    def mousepressed(x, y)
+      puts x + " " + y
     end
     def self.quit
       puts "Game Over"

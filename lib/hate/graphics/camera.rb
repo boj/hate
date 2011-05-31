@@ -20,13 +20,13 @@ module Hate
       end
       
       def run(x, y)
-        glLoadIdentity
         glTranslatef(@x, @y, @z)
         glViewport(0, 0, x, y)
         glMatrixMode(GL_PROJECTION)
         glLoadIdentity
         gluPerspective(@angle, x / y, @near, @far)
         glMatrixMode(GL_MODELVIEW)
+        glLoadIdentity
       end
       
     end

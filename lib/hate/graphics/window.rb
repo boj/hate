@@ -48,11 +48,11 @@ module Hate
         glutReshapeFunc(method(:reshape).to_proc)
         glutKeyboardFunc(method(:key).to_proc)
         glutMouseFunc(method(:mouse).to_proc)
-        glutMotionFunc(method(:motion).to_proc)
       end
 
       def display
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
+        glLoadIdentity
         Hate::Graphics::Manager.run
       end
 
@@ -68,28 +68,13 @@ module Hate
       end
       
       def key(k, x, y)
-        case k
-          when ?z
-            
-          when ?Z
-            
-          when 27 # Escape
-            exit
-        end
+        Hate::Core::Callbacks.keypressed(k)
         glutPostRedisplay
       end
       
       def mouse(button, state, x, y)
-        @mouse = state
-        @x0, @y0 = x, y
-      end
-      
-      def motion(x, y)
-        if @mouse == GLUT_DOWN then
-          #@view_roty += @x0 - x
-          #@view_rotx += @y0 - y
-        end
-        @x0, @y0 = x, y
+        Hate::Core::Callbacks.mousepressed(x, y, button)
+        glutPostRedisplay
       end
       
       def time
