@@ -1,5 +1,6 @@
 module Hate
   module Graphics
+    require 'util/gl'
 
     DEFAULT_WIDTH      = 800
     DEFAULT_HEIGHT     = 600
@@ -40,6 +41,7 @@ module Hate
         glDepthFunc(GL_LEQUAL)
         glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST) # Small performance hit
         
+        # Hardware lights
         Hate::Graphics::Manager.lights.each_with_index do |light, i|
           glLightfv(eval("GL_LIGHT%i" % (i + 1)), GL_AMBIENT, light.ambient)
           glLightfv(eval("GL_LIGHT%i" % (i + 1)), GL_DIFFUSE, light.diffuse)
