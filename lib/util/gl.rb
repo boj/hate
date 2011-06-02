@@ -1,4 +1,7 @@
 module GL
+  GL_VERTEX_SHADER = 0x8B31
+  GL_FRAGMENT_SHADER = 0x8B30
+  
   # GL_VERSION_2_0
   attach_function :glBlendEquationSeparate, [ :uint, :uint ], :void
   attach_function :glDrawBuffers, [ :int, :pointer ], :void

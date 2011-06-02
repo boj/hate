@@ -25,8 +25,18 @@ module Hate
       #@cube2.compile
       Hate::Graphics::Manager.add_object(@cube2)
       
-      @light1 = Hate::Graphics::Light.new
-      Hate::Graphics::Manager.add_light(@light1)
+      #v = Hate::Graphics::Shader::Vertex.new(File.dirname(__FILE__) + "/../lib/hate/graphics/shaders/lights/point.vertex")
+      #f = Hate::Graphics::Shader::Vertex.new(File.dirname(__FILE__) + "/../lib/hate/graphics/shaders/lights/point.fragment")
+      #p = Hate::Graphics::Shader::Program.new
+      #@p.attach(v)
+      #@p.attach(f)
+      #@p.compile
+      
+      ########################################
+      # Hardware Lights
+      ########################################
+      #@light1 = Hate::Graphics::Light.new
+      #Hate::Graphics::Manager.add_light(@light1)
       
       #@light2 = Hate::Graphics::Light.new([1.0, 0.0, 0.0, 1.0], [0.0, 1.0, 1.0, 1.0], [10.0, 10.0, 10.0, 0.0])
       #Hate::Graphics::Manager.add_light(@light2)
@@ -39,6 +49,7 @@ module Hate
       @r2 = rand if Hate::Core.window.frames % 100 == 0
     end
     def self.draw
+      #@p.run # run the shader logic
       @cube1.rotate(@cube1.ra + @r1, 0.0, 1.0, 0.0)
       @cube2.rotate(@cube2.ra + @r2, 0.0, 0.0, 1.0)
     end

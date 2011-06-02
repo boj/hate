@@ -1,6 +1,5 @@
 module Hate
   module Graphics
-    require 'util/gl'
 
     DEFAULT_WIDTH      = 800
     DEFAULT_HEIGHT     = 600
@@ -8,7 +7,6 @@ module Hate
     DEFAULT_BACKGROUND = nil
     
     class Window
-      include FFI, GL, GLU, GLUT
       
       attr_reader :width, :height
       attr_reader :frames
