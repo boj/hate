@@ -34,6 +34,7 @@ module Hate
         glutSpecialFunc(method(:key_down).to_proc)
         glutSpecialUpFunc(method(:key_up).to_proc)
         glutMouseFunc(method(:mouse).to_proc)
+        glutVisibilityFunc(method(:visible).to_proc)
 
         #glColor4f(1.0, 1.0, 1.0, 0.5)
         #glBlendFunc(GL_SRC_ALPHA,GL_ONE)
@@ -74,6 +75,10 @@ module Hate
         Hate::Core::Callbacks.draw
         @frames += 1
         display
+      end
+      
+      def visible(vis)
+        glutIdleFunc((vis == GLUT_VISIBLE ? method(:idle).to_proc : nil))
       end
       
       def key_down(k, x, y)
