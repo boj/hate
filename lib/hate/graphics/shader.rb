@@ -10,10 +10,12 @@ module Hate
         
         def attach(shader)
           glAttachShader(@program, shader)
+          self
         end
         
         def compile
           glLinkProgram(@program)
+          self
         end
         
         def run
@@ -22,26 +24,36 @@ module Hate
         
       end
       
-      class Vertex
+      class Base
+        
+        attr_reader :shader
         
         def initialize(file)
-          source = File.open(file)
-          @shader = glCreateShader(GL_VERTEX_SHADER)
-          glShaderSource(source, 1, @shader, nil)
+          source = []
+          source << MemoryPointer.from_string(File.open(file).read)
+          arg = MemoryPointer.new(:pointer, source.length)
+          source.each_with_index do |p, i|
+            arg[i].put_pointer(0, p)
+          end
+
+          if self.class == Hate::Graphics::Shader::Vertex
+            @shader = glCreateShader(GL_VERTEX_SHADER)
+          elsif self.class == Hate::Graphics::Shader::Fragment
+            @shader = glCreateShader(GL_FRAGMENT_SHADER)
+          end  
+          
+          glShaderSource(@shader, source.size, arg, nil)
           glCompileShader(@shader)
         end
         
       end
       
-      class Fragment
+      class Vertex < Base
         
-        def initialize(file)
-          source = File.open(file)
-          @shader = glCreateShader(GL_FRAGMENT_SHADER)
-          glShaderSource(source, 1, @shader, nil)
-          glCompileShader(@shader)
-        end
-        
+      end
+      
+      class Fragment < Base
+
       end
       
     end

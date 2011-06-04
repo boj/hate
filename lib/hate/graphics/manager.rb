@@ -3,6 +3,7 @@ module Hate
     module Manager
       
       @objects = []
+      @shaders = []
       @lights  = []
       @cameras = []
       
@@ -12,6 +13,9 @@ module Hate
       
       def self.run
         @objects.each do |obj|
+          obj.run
+        end
+        @shaders.each do |obj|
           obj.run
         end
         @lights.each do |obj|
@@ -25,6 +29,14 @@ module Hate
       
       def self.remove_object(obj)
         @objects.delete obj
+      end
+      
+      def self.add_shader(obj)
+        @shaders << obj
+      end
+      
+      def self.remove_shader(obj)
+        @shaders.delete obj
       end
       
       def self.add_light(obj)

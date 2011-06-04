@@ -49,9 +49,8 @@ module Hate
     def self.run
       trapcc  # Trap CTRL-C
       options # Load cli options
-      load    # Load user game
-
       @window = Hate::Graphics::Window.new
+      load    # Load user game
       @window.start
     end
     
