@@ -16,13 +16,14 @@ module Hate
       @cube1.translate(-1.2, 0.0, -7.0)
       @cube1.rotate(45.0, 0.5, 0.3, 0.1)
       @cube1.color(0.0, 1.0, 0.0)
+      @cube1.compile
       Hate::Graphics::Manager.add_object(@cube1)
       
       @cube2 = Hate::Graphics::Shapes::Cube.new(0.7)
       @cube2.translate(1.2, 0.0, -10.0)
       @cube2.rotate(45.0, 0.5, 0.3, 0.1)
       @cube2.color(1.0, 0.0, 0.0)
-      #@cube2.compile
+      @cube2.compile
       Hate::Graphics::Manager.add_object(@cube2)
       
       ########################################
@@ -47,15 +48,15 @@ module Hate
       @r2 = 0.01
     end
     def self.update
-      @r1 = 0.01 if Hate::Core.window.frames % 200 == 0
-      @r2 = 0.01 if Hate::Core.window.frames % 100 == 0
+      #@r1 = 0.01 if Hate::Core.window.frames % 200 == 0
+      #@r2 = 0.01 if Hate::Core.window.frames % 100 == 0
     end
     def self.draw
-      @cube1.rotate(@cube1.ra + @r1, 0.0, 1.0, 0.0)
-      @cube2.rotate(@cube2.ra + @r2, 0.0, 0.0, 1.0)
+      #@cube1.rotate(@cube1.ra + @r1, 0.0, 1.0, 0.0).compile
+      #@cube2.rotate(@cube2.ra + @r2, 0.0, 0.0, 1.0).compile
     end
-    def keypressed(k)
-      puts "key: " + k
+    def self.keypressed(k)
+      puts "key: %i" % k
       case k
         when ?w, ?W
           
@@ -69,8 +70,8 @@ module Hate
           Hate::Game.quit
       end
     end
-    def mousepressed(x, y)
-      puts x + " " + y
+    def self.mousepressed(x, y, button)
+      puts "%i - %i" % [x, y]
     end
     def self.quit
       puts "Game Over"

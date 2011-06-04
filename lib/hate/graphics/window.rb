@@ -16,6 +16,13 @@ module Hate
         @height = h || Hate::Graphics::DEFAULT_HEIGHT
         
         @frames = 0
+        
+        @mouse =  {
+          :state  => nil,
+          :button => nil,
+          :x      => nil,
+          :y      => nil
+        }
 
         glutInit(
           MemoryPointer.new(:int, 1).put_int(0, 0),
@@ -27,18 +34,15 @@ module Hate
         glutCreateWindow(title)
         
         glutDisplayFunc(method(:display).to_proc)
-        glutIdleFunc(method(:idle).to_proc)
+        #glutIdleFunc(method(:idle).to_proc)
         glutReshapeFunc(method(:reshape).to_proc)
         glutKeyboardFunc(method(:key_down).to_proc)
         glutKeyboardUpFunc(method(:key_up).to_proc)
         glutSpecialFunc(method(:key_down).to_proc)
         glutSpecialUpFunc(method(:key_up).to_proc)
         glutMouseFunc(method(:mouse).to_proc)
-        glutVisibilityFunc(method(:visible).to_proc)
+        glutMotionFunc(method(:motion).to_proc)
 
-        #glColor4f(1.0, 1.0, 1.0, 0.5)
-        #glBlendFunc(GL_SRC_ALPHA,GL_ONE)
-        #glEnable(GL_BLEND)
         glEnable(GL_DEPTH_TEST)
         glEnable(GL_CULL_FACE)
         glEnable(GL_COLOR_MATERIAL)
@@ -77,10 +81,6 @@ module Hate
         display
       end
       
-      def visible(vis)
-        glutIdleFunc((vis == GLUT_VISIBLE ? method(:idle).to_proc : nil))
-      end
-      
       def key_down(k, x, y)
         Hate::Input::Keyboard.pressed(k, x, y)
         glutPostRedisplay
@@ -92,10 +92,17 @@ module Hate
       end
       
       def mouse(button, state, x, y)
-        if state == GLUT_DOWN
-          Hate::Input::Mouse.pressed(x, y, button)
+        @mouse[:state]  = state
+        @mouse[:button] = button
+        @mouse[:x]      = x
+        @mouse[:y]      = y
+      end
+      
+      def motion(x, y)
+        if @mouse[:state] == GLUT_DOWN
+          Hate::Input::Mouse.pressed(x, y, @mouse[:button])
         else
-          Hate::Input::Mouse.released(x, y, button)
+          Hate::Input::Mouse.released(x, y, @mouse[:button])
         end  
         glutPostRedisplay
       end
