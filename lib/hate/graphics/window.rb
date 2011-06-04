@@ -26,6 +26,15 @@ module Hate
         glutInitWindowSize(@width, @height)
         glutCreateWindow(title)
         
+        glutDisplayFunc(method(:display).to_proc)
+        glutIdleFunc(method(:idle).to_proc)
+        glutReshapeFunc(method(:reshape).to_proc)
+        glutKeyboardFunc(method(:key_down).to_proc)
+        glutKeyboardUpFunc(method(:key_up).to_proc)
+        glutSpecialFunc(method(:key_down).to_proc)
+        glutSpecialUpFunc(method(:key_up).to_proc)
+        glutMouseFunc(method(:mouse).to_proc)
+
         #glColor4f(1.0, 1.0, 1.0, 0.5)
         #glBlendFunc(GL_SRC_ALPHA,GL_ONE)
         #glEnable(GL_BLEND)
@@ -47,12 +56,6 @@ module Hate
           glEnable(eval("GL_LIGHT%i" % (i + 1)))
         end
         glEnable(GL_LIGHTING) if Hate::Graphics::Manager.lights.size > 0
-        
-        glutDisplayFunc(method(:display).to_proc)
-        glutIdleFunc(method(:idle).to_proc)
-        glutReshapeFunc(method(:reshape).to_proc)
-        glutKeyboardFunc(method(:key).to_proc)
-        glutMouseFunc(method(:mouse).to_proc)
       end
 
       def display
@@ -73,13 +76,22 @@ module Hate
         display
       end
       
-      def key(k, x, y)
-        Hate::Core::Callbacks.keypressed(k)
+      def key_down(k, x, y)
+        Hate::Input::Keyboard.pressed(k, x, y)
+        glutPostRedisplay
+      end
+      
+      def key_up(k, x, y)
+        Hate::Input::Keyboard.released(k, x, y)
         glutPostRedisplay
       end
       
       def mouse(button, state, x, y)
-        Hate::Core::Callbacks.mousepressed(x, y, button)
+        if state == GLUT_DOWN
+          Hate::Input::Mouse.pressed(x, y, button)
+        else
+          Hate::Input::Mouse.released(x, y, button)
+        end  
         glutPostRedisplay
       end
       
