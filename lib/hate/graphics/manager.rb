@@ -12,6 +12,9 @@ module Hate
       end
       
       def self.run
+        @cameras.each do |obj|
+          obj.run
+        end
         @objects.each do |obj|
           obj.run
         end

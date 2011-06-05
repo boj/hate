@@ -34,7 +34,7 @@ module Hate
         glutCreateWindow(title)
         
         glutDisplayFunc(method(:display).to_proc)
-        #glutIdleFunc(method(:idle).to_proc)
+        glutIdleFunc(method(:idle).to_proc)
         glutReshapeFunc(method(:reshape).to_proc)
         glutKeyboardFunc(method(:key_down).to_proc)
         glutKeyboardUpFunc(method(:key_up).to_proc)
@@ -71,7 +71,7 @@ module Hate
       end
 
       def reshape(x, y)
-        Hate::Graphics::Manager.default_camera.run(x, y)
+        Hate::Graphics::Manager.default_camera.reshape(x, y)
       end
 
       def idle
@@ -112,7 +112,11 @@ module Hate
       end
 
       def start
-        glutMainLoop
+        begin
+          glutMainLoop
+        rescue NoMethodError => error
+          puts "Caught error: %s" % error
+        end  
       end
 
     end
