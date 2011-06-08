@@ -1,8 +1,12 @@
 module Hate
   module Graphics
     require 'util/gl'
+    require "ruby-sdl-ffi/sdl"
 
-    include FFI, GL, GLU, GLUT
+    include FFI, GL, GLU
+    
+    class SDLException < RuntimeError
+    end
 
     autoload :Camera,    APP_PATH + '/hate/graphics/camera.rb'
     autoload :Color,     APP_PATH + '/hate/graphics/color.rb'

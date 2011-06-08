@@ -14,6 +14,7 @@ module Hate
     end
     
     def self.halt
+      @window.quit
       Hate::Core::Callbacks.quit
       puts "Goodbye!"
       exit

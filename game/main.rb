@@ -15,7 +15,7 @@ module Hate
       
       @cubes = []
       base_cube = Hate::Graphics::Shapes::Cube.new(0.5)
-      87.times do |i|
+      100.times do |i|
         cube = base_cube.clone
         cube.translate(-rand(10) + 5.0, -rand(10) + 5.0, -rand(20).to_f + -5.0)
         cube.rotate((rand(360) + 1).to_f, rand, rand, rand)
@@ -27,11 +27,11 @@ module Hate
       ########################################
       # Shader Lights
       ########################################
-      #v = Hate::Graphics::Shader::Vertex.new(File.dirname(__FILE__) + "/../lib/hate/graphics/shaders/lights/point.vertex")
-      #f = Hate::Graphics::Shader::Fragment.new(File.dirname(__FILE__) + "/../lib/hate/graphics/shaders/lights/point.fragment")
-      #@p = Hate::Graphics::Shader::Program.new
-      #@p.attach(v.shader).attach(f.shader).compile
-      #Hate::Graphics::Manager.add_shader(@p)
+      v = Hate::Graphics::Shader::Vertex.new(File.dirname(__FILE__) + "/../lib/hate/graphics/shaders/lights/point.vertex")
+      f = Hate::Graphics::Shader::Fragment.new(File.dirname(__FILE__) + "/../lib/hate/graphics/shaders/lights/point.fragment")
+      @p = Hate::Graphics::Shader::Program.new
+      @p.attach(v.shader).attach(f.shader).compile
+      Hate::Graphics::Manager.add_shader(@p)
       
       ########################################
       # Hardware Lights

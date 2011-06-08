@@ -17,31 +17,13 @@ module Hate
         
         @frames = 0
         
-        @mouse =  {
-          :state  => nil,
-          :button => nil,
-          :x      => nil,
-          :y      => nil
-        }
-
-        glutInit(
-          MemoryPointer.new(:int, 1).put_int(0, 0),
-          MemoryPointer.new(:pointer, 1).put_pointer(0, nil)
-        )
-        
-        glutInitDisplayMode(GLUT_RGB | GLUT_DEPTH | GLUT_DOUBLE)
-        glutInitWindowSize(@width, @height)
-        glutCreateWindow(title)
-        
-        glutDisplayFunc(method(:display).to_proc)
-        glutIdleFunc(method(:idle).to_proc)
-        glutReshapeFunc(method(:reshape).to_proc)
-        glutKeyboardFunc(method(:key_down).to_proc)
-        glutKeyboardUpFunc(method(:key_up).to_proc)
-        glutSpecialFunc(method(:key_down).to_proc)
-        glutSpecialUpFunc(method(:key_up).to_proc)
-        glutMouseFunc(method(:mouse).to_proc)
-        glutMotionFunc(method(:motion).to_proc)
+        if SDL.Init(SDL::INIT_EVERYTHING) == 0
+           SDL.EnableUNICODE(1)
+        else
+           throw Main::Graphics::SDLException, "SDL Exception: #{SDL.GetError()}"
+        end
+        SDL.SetVideoMode(@width, @height, 24, SDL::OPENGL)
+        SDL.Init(SDL::INIT_VIDEO)
 
         glEnable(GL_DEPTH_TEST)
         glEnable(GL_CULL_FACE)
@@ -63,61 +45,56 @@ module Hate
         glEnable(GL_LIGHTING) if Hate::Graphics::Manager.lights.size > 0
       end
 
-      def display
+      def draw
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
         glLoadIdentity
+        Hate::Core::Callbacks.draw
         Hate::Graphics::Manager.run
-        glutSwapBuffers
+        SDL.GL_SwapBuffers()
+        @frames += 1
       end
 
       def reshape(x, y)
         Hate::Graphics::Manager.default_camera.reshape(x, y)
       end
 
-      def idle
+      def update
+        until (event = SDL::PollEvent()).nil?
+          events(event)
+        end
+        reshape(@width, @height)
         Hate::Core::Callbacks.update if @frames % 2 == 0 # Only call update every second cycle
-        Hate::Core::Callbacks.draw
-        @frames += 1
-        display
       end
       
-      def key_down(k, x, y)
-        Hate::Input::Keyboard.pressed(k, x, y)
-        glutPostRedisplay
-      end
-      
-      def key_up(k, x, y)
-        Hate::Input::Keyboard.released(k, x, y)
-        glutPostRedisplay
-      end
-      
-      def mouse(button, state, x, y)
-        @mouse[:state]  = state
-        @mouse[:button] = button
-        @mouse[:x]      = x
-        @mouse[:y]      = y
-      end
-      
-      def motion(x, y)
-        if @mouse[:state] == GLUT_DOWN
-          Hate::Input::Mouse.pressed(x, y, @mouse[:button])
-        else
-          Hate::Input::Mouse.released(x, y, @mouse[:button])
-        end  
-        glutPostRedisplay
+      def events(event)
+        case event.type
+        when SDL::KEYDOWN
+          Hate::Input::Keyboard.pressed(event.keysym.sym)
+        when SDL::KEYUP
+          Hate::Input::Keyboard.released(event.keysym.sym)
+        when SDL::MOUSEBUTTONDOWN
+          Hate::Input::Mouse.pressed(event.x, event.y, event.button)
+        when SDL::MOUSEBUTTONUP
+          Hate::Input::Mouse.released(event.x, event.y, event.button)
+        when SDL::VIDEORESIZE
+          reshape(event.w, event.h)
+        end
       end
       
       def time
-        glutGet(GLUT_ELAPSED_TIME) / 1000.0
+        
       end
 
       def start
-        begin
-          glutMainLoop
-        rescue NoMethodError => error
-          puts "Caught ruby error: %s" % error
-          puts "Last glGetError: %s" % glGetError
-        end  
+        loop do
+          update
+          draw
+        end
+      end
+      
+      def quit
+        SDL.QuitSubSystem(SDL::INIT_VIDEO)
+        SDL.Quit
       end
 
     end

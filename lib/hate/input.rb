@@ -4,12 +4,12 @@ module Hate
       
       @key_states = Array.new(256)
       
-      def self.pressed(k, x, y)
+      def self.pressed(k)
         @key_states[k] = true
         Hate::Core::Callbacks.keypressed(k)
       end
       
-      def self.released(k, x, y)
+      def self.released(k)
         @key_states[k] = false
         Hate::Core::Callbacks.keyreleased(k)
       end
