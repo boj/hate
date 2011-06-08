@@ -51,7 +51,7 @@ module Hate
         glClearColor(1.0, 1.0, 1.0, 0.0)
         glClearDepth(1.0)
         glDepthFunc(GL_LEQUAL)
-        glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST) # Small performance hit
+        #glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST) # Small performance hit
         
         # Hardware lights
         Hate::Graphics::Manager.lights.each_with_index do |light, i|
@@ -115,7 +115,8 @@ module Hate
         begin
           glutMainLoop
         rescue NoMethodError => error
-          puts "Caught error: %s" % error
+          puts "Caught ruby error: %s" % error
+          puts "Last glGetError: %s" % glGetError
         end  
       end
 

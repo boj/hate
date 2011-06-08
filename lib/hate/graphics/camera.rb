@@ -29,7 +29,6 @@ module Hate
         glLoadIdentity
         gluPerspective(@angle, x / y, @near, @far)
         glMatrixMode(GL_MODELVIEW)
-        glLoadIdentity
       end
       
       def run

@@ -15,12 +15,15 @@ module Hate
         @cameras.each do |obj|
           obj.run
         end
+
         @objects.each do |obj|
           obj.run
         end
+        
         @shaders.each do |obj|
           obj.run
         end
+        
         @lights.each do |obj|
           obj.run
         end

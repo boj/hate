@@ -9,6 +9,17 @@ module Hate
         attr_reader :ra, :rx, :ry, :rz
         attr_reader :c
         
+        def initialize(s=1.0)
+          @size = s
+          
+          @memory = nil
+          compile
+          
+          translate
+          rotate
+          color
+        end
+        
         def translate(x=0.0, y=0.0, z=0.0)
           @x, @y, @z = x, y, z
           self
@@ -24,22 +35,33 @@ module Hate
           self
         end
         
+        def compile
+          @memory = glGenLists(1) if @memory.nil?
+          glNewList(@memory, GL_COMPILE)
+          build
+          glEndList
+        end
+
+        def run
+          glLoadIdentity
+          glPushMatrix
+          glColor3f(@c[0], @c[1], @c[2])
+          glTranslatef(@x, @y, @z)
+          glRotatef(@ra, @rx, @ry, @rz)
+          @memory.nil? ? build : glCallList(@memory)
+          glPopMatrix
+        end
+        
+        def destroy
+          glDeleteLists(@memory)
+          @memory = nil
+        end
+        
       end
       
       class Square < Base
-        
-        def initialize(s=1.0)
-          @size = s
-          translate
-          rotate
-          color
-        end
-        
-        def run
-          glLoadIdentity
-          glTranslatef(@x, @y, @z)
-          glRotatef(@ra, @rx, @ry, @rz)
-          glColor3f(@c[0], @c[1], @c[2])
+
+        def build
           glutSolidCube(@size)
         end
 
@@ -47,19 +69,7 @@ module Hate
       
       class Cube < Base
         
-        def initialize(s=1.0)
-          @size = s
-          translate
-          rotate
-          color
-        end
-        
         def build
-          glPushMatrix
-          glTranslatef(@x, @y, @z)
-          glRotatef(@ra, @rx, @ry, @rz)
-          glColor3f(@c[0], @c[1], @c[2])
-          
           glBegin(GL_QUADS)
           
           glNormal3f(0.0, 0.0, 1.0)
@@ -99,20 +109,6 @@ module Hate
       		glVertex3f(@size,-@size,-@size)
           
           glEnd
-          
-          glPopMatrix
-        end
-        
-        def compile
-          @memory = glGenLists(1) if @memory.nil?
-          glNewList(@memory, GL_COMPILE)
-          build
-          glEndList
-        end
-        
-        def run
-          glLoadIdentity
-          @memory.nil? ? build : glCallList(@memory)
         end
 
       end
