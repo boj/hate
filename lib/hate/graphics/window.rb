@@ -33,7 +33,7 @@ module Hate
         glClearColor(1.0, 1.0, 1.0, 0.0)
         glClearDepth(1.0)
         glDepthFunc(GL_LEQUAL)
-        #glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST) # Small performance hit
+        glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST) # Small performance hit
         
         # Hardware lights
         Hate::Graphics::Manager.lights.each_with_index do |light, i|
@@ -76,6 +76,8 @@ module Hate
           Hate::Input::Mouse.pressed(event.x, event.y, event.button)
         when SDL::MOUSEBUTTONUP
           Hate::Input::Mouse.released(event.x, event.y, event.button)
+        when SDL::MOUSEMOTION
+          Hate::Input::Mouse.motion(event.x, event.y, event.xrel, event.yrel, event.state)
         when SDL::VIDEORESIZE
           reshape(event.w, event.h)
         end

@@ -83,7 +83,13 @@ module Hate
     def self.mousepressed(x, y, button)
       puts "%i - %i" % [x, y]
     end
+    def self.mousemotion(x, y, xr, yr, state)
+      puts "(%i, %i) - (%i, %i), state: %i" % [x, y, xr, yr, state]
+    end
     def self.quit
+      # Until I find a better solution (events), this is one of the rare times we call Core directly.
+      # This doesn't kill the process nicely at the moment.
+      Hate::Core.quit
       puts "Game Over"
     end
   end

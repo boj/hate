@@ -65,6 +65,10 @@ module Hate
       @window.time
     end
     
+    def self.quit
+      halt
+    end
+    
     # Callbacks are overridden by the user in Core::Game
     module Callbacks
       
@@ -91,6 +95,11 @@ module Hate
       # Called when a mouse button is let up.
       def self.mousereleased(x, y, button)
         Hate::Game.mousereleased(x, y, button) if Hate::Game.respond_to?('mousereleased')
+      end
+      
+      # Called when a mouse is moved.
+      def self.mousemotion(x, y, xr, xy, state)
+        Hate::Game.mousemotion(x, y, xr, xy, state) if Hate::Game.respond_to?('mousemotion')
       end
       
       # Called when a key is pressed down.

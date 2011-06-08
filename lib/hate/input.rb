@@ -26,6 +26,10 @@ module Hate
         Hate::Core::Callbacks.mousereleased(x, y, button)
       end
       
+      def self.motion(x, y, xr, yr, state)
+        Hate::Core::Callbacks.mousemotion(x, y, xr, yr, state)
+      end
+      
     end
   end
 end
