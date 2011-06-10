@@ -62,7 +62,7 @@ module Hate
       end
       
       def self.default_camera
-        return Hate::Graphics::Camera.new if @cameras.empty?
+        add_camera Hate::Graphics::Camera.new if @cameras.empty?
         @cameras.each do |obj|
           return obj if obj.is_default?
         end

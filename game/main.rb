@@ -3,9 +3,7 @@ module Hate
     def self.load
       puts "Welcome!"
       
-      @camera = Hate::Graphics::Camera.new
-      @camera.translate(-1.5, 0.0, 0.0)
-      Hate::Graphics::Manager.add_camera(@camera)
+      @camera = Hate::Graphics::Manager.default_camera
       
       #@square = Hate::Graphics::Shapes::Square.new(5.0)
       #@square.translate(0.0, 0.0, -15.0)
@@ -42,7 +40,7 @@ module Hate
       #@light2 = Hate::Graphics::Light.new([1.0, 0.0, 0.0, 1.0], [0.0, 1.0, 1.0, 1.0], [10.0, 10.0, 10.0, 0.0])
       #Hate::Graphics::Manager.add_light(@light2)
       
-      @speed = 0.1
+      @speed = 1.0
       @angle = 0.0
     end
     def self.update
@@ -61,13 +59,14 @@ module Hate
     end
     def self.keypressed(k)
       puts "key: %i" % k
+      puts "camera: (%f, %f) - (%f, %f)" % [@camera.x, @camera.z, @camera.xl, @camera.zl]
       case k
         when 119
-          @camera.x += @camera.xl * @angle
-          @camera.z += @camera.zl * @angle
+          @camera.x += @camera.xl * @speed
+          @camera.z += @camera.zl * @speed
         when 115
-          @camera.x -= @camera.xl * @angle
-          @camera.z -= @camera.zl * @angle
+          @camera.x -= @camera.xl * @speed
+          @camera.z -= @camera.zl * @speed
         when 97
           @angle -= 0.01
           @camera.xl = Math.sin(@angle)

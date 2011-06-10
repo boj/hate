@@ -43,11 +43,12 @@ module Hate
           glEnable(eval("GL_LIGHT%i" % (i + 1)))
         end
         glEnable(GL_LIGHTING) if Hate::Graphics::Manager.lights.size > 0
+        
+        reshape(@width, @height)
       end
 
       def draw
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
-        glLoadIdentity
         Hate::Core::Callbacks.draw
         Hate::Graphics::Manager.run
         SDL.GL_SwapBuffers()
@@ -62,7 +63,6 @@ module Hate
         until (event = SDL::PollEvent()).nil?
           events(event)
         end
-        reshape(@width, @height)
         Hate::Core::Callbacks.update if @frames % 2 == 0 # Only call update every second cycle
       end
       
