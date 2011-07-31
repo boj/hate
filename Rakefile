@@ -8,7 +8,7 @@ Jeweler::Tasks.new do |gem|
   gem.email       = "mojobojo@gmail.com"
   gem.homepage    = "http://github.com/boj/hate"
   gem.authors     = ["Brian Jones"]
-  gem.version     = "0.0.1"
+  gem.version     = "0.1.0"
 
   gem.add_dependency('ffi-opengl', '>= 0.2.1')
   gem.add_dependency('ruby-sdl-ffi', '>= 0.4')
