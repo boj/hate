@@ -26,6 +26,7 @@ module Hate
       end
       
       def run
+        glLoadIdentity
         gluLookAt(
           @x, @y, @z,
           @x + @xl, 1.0, @z + @zl,
